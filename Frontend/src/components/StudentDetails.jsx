@@ -32,27 +32,24 @@ function StudentDetails() {
         setLoading(true);
         setError(null);
 
-        // Récupérer les informations de l'étudiant
         const studentData = await fetchStudentById(studentId);
         console.log("Données de l'étudiant:", studentData);
   
-        // Nettoyer les données
         const cleanedStudent = {
           ...studentData,
-          name: cleanString(studentData.name),  // Nettoyer le nom
+          name: cleanString(studentData.name),  
         };
         setStudent(cleanedStudent);
   
-        // Récupérer les notes de l'étudiant
         const notesData = await fetchNotesByStudentId(studentId);
         console.log("Données des notes:", notesData);
   
-        // Nettoyer les notes
+
         const cleanedNotes = notesData.map(note => ({
           ...note,
           student: {
             ...note.student,
-            name: cleanString(note.student.name), // Nettoyer le nom de l'étudiant dans les notes
+            name: cleanString(note.student.name), 
           },
         }));
         setNotes(cleanedNotes);
@@ -68,7 +65,7 @@ function StudentDetails() {
     fetchStudentDetails();
   }, [studentId]);
 
-  // Fonction pour ajouter une note
+  
   const handleAddNote = async (e) => {
     e.preventDefault();
 
@@ -142,7 +139,6 @@ function StudentDetails() {
 
       <button onClick={toggleModal}>Ajouter une note</button>
 
-      {/* Modal pour ajouter une note */}
       {showModal && (
         <div className="modal">
           <div className="modal-content">

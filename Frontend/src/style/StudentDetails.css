@@ -1,12 +1,23 @@
 .student-details-container {
-    padding: 20px;
-    font-family: Arial, sans-serif;
-  }
-  
-  .student-info {
-    margin-bottom: 20px;
-  }
-  
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  text-align: center; 
+}
+
+.title {
+  text-align: center; 
+}
+
+.student-info {
+  display: flex; 
+  justify-content: center; 
+  gap: 130px; 
+}
+
+.student-info p {
+  margin: 0; 
+}
+
   .notes-table {
     width: 100%;
     border-collapse: collapse;
@@ -22,12 +33,12 @@
   }
   
   .notes-table th {
-    background-color: #4CAF50;
-    color: white;
+    background-color: white; 
+    color: #000000; 
   }
   
   .notes-table tr:hover {
-    background-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
   }
 
   .modal {

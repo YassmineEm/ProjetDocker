@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  backend:
+    image: yassmineem/backend:1.0.0
+    container_name: backend_container
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  frontend:
+    image: yassmineem/frontend:1.0.0
+    container_name: frontend_container
+    ports:
+      - "3000:80"
+    networks:
+      - app-network
+
+  db:
+    image: mysql:8.0
+    container_name: mysql_container
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+    driver: local

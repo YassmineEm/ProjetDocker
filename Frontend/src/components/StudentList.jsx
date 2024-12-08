@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom"; 
-import { fetchStudents, createStudent} from "../services/ApiService";
+import { fetchStudents, createStudent, fetchNotesByStudentId} from "../services/ApiService";
 import "../style/StudentList.css";
 
 const cleanName = (name) => {
@@ -9,6 +9,11 @@ const cleanName = (name) => {
 
 const formatDate = (date) => {
   return new Date(date).toISOString().split("T")[0];
+};
+
+const calculateAverage = (notes) => {
+  const total = notes.reduce((sum, note) => sum + note.value, 0);
+  return notes.length > 0 ? total / notes.length : 0; 
 };
 
 function StudentList() {
@@ -20,8 +25,15 @@ function StudentList() {
   useEffect(() => {
     const getStudents = async () => {
       try {
-        const data = await fetchStudents();
-        setStudents(data);
+        const data = await fetchStudents(); 
+        const studentsWithAverage = await Promise.all(
+          data.map(async (student) => {
+            const notes = await fetchNotesByStudentId(student.id); 
+            const average = calculateAverage(notes); 
+            return { ...student, average }; 
+          })
+        );
+        setStudents(studentsWithAverage); 
       } catch (error) {
         console.error("Erreur lors du chargement des étudiants:", error);
       }
@@ -87,12 +99,8 @@ function StudentList() {
           {students.map((student) => (
             <tr
               key={student.id}
-              style={{
-                backgroundColor: student.average && student.average > 10 ? "green" : "#FF8E8E",
-                color: "white",
-                cursor: "pointer", 
-              }}
-              onClick={() => handleRowClick(student.id)} 
+              className={student.average > 10 ? "student-row-green" : "student-row-red"}
+              onClick={() => handleRowClick(student.id)}
             >
               <td>{cleanName(student.name)}</td>
               <td>{formatDate(student.creationDate)}</td>
