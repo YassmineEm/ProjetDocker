@@ -1,0 +1,12 @@
+apiVersion: psmdb.percona.com/v1
+kind: PerconaServerMySQL
+metadata:
+  name: my-cluster
+  namespace: exam
+spec:
+  replicas: 3
+  storage:
+    size: 5Gi
+    storageClassName: standard
+  backup:
+    enabled: true

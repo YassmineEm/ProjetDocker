@@ -1,0 +1,43 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: frontend-service
+  namespace: exam
+spec:
+  selector:
+    app: frontend
+  ports:
+    - port: 3000
+      targetPort: 80
+      protocol: TCP
+      nodePort: 30001
+  type: NodePort 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-deployment
+  namespace: exam
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: frontend
+  template:
+    metadata:
+      labels:
+        app: frontend
+    spec:
+      containers:
+        - name: frontend
+          image: yassmineem/frontend:1.0.0
+          ports:
+            - containerPort: 80
+              name: http-port
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "128Mi"
+            limits:
+              cpu: "500m"
+              memory: "256Mi"
